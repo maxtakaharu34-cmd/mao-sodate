@@ -355,12 +355,18 @@
     levelupEl.classList.remove('show');
     void levelupEl.offsetWidth;
     levelupEl.classList.add('show');
+    // Belt-and-suspenders: strip .show after the animation completes so
+    // the overlay never lingers in front of the monster.
+    clearTimeout(flashLevelUp._t);
+    flashLevelUp._t = setTimeout(() => levelupEl.classList.remove('show'), 1700);
   }
   function flashEvolve(label) {
     evolveText.textContent = label + ' に進化！';
     evolveEl.classList.remove('show');
     void evolveEl.offsetWidth;
     evolveEl.classList.add('show');
+    clearTimeout(flashEvolve._t);
+    flashEvolve._t = setTimeout(() => evolveEl.classList.remove('show'), 2500);
   }
 
   function addExp(amount) {
