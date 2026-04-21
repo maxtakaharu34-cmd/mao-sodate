@@ -369,18 +369,22 @@
     while (state.exp >= expForLevel(state.lv)) {
       state.exp -= expForLevel(state.lv);
       state.lv++;
-      Sound.levelUp();
-      flashLevelUp();
       const prevStage = state.stageId;
       const st = currentStage(state.lv);
       if (st.id !== prevStage) {
+        // Evolution level-up: skip the LEVEL UP flash so the big
+        // evolution cut-in stays clean (no overlap with "LV UP!").
         state.stageId = st.id;
         Sound.evolve();
         setTimeout(() => {
           flashEvolve(st.label);
           renderMonster();
           speak(st.label + 'になったぞ…', 2800);
-        }, 700);
+        }, 250);
+      } else {
+        // Regular level up — show the flash only when no evolution is coming.
+        Sound.levelUp();
+        flashLevelUp();
       }
     }
   }
